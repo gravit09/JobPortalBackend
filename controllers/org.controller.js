@@ -82,7 +82,7 @@ const getYourOrg = async (req, res) => {
   try {
     const yourOrgDetails = await Organization.findById({ _id: organization });
     return res.status(200).json({
-      message: "Org detail fetched",
+      message: true,
       yourOrgDetails,
     });
   } catch (err) {
@@ -91,14 +91,4 @@ const getYourOrg = async (req, res) => {
   }
 };
 
-const isOrg = async (req, res) => {
-  const userId = req.userId;
-  const { organization } = await User.findById({ _id: userId });
-  if (organization) {
-    return res.status(200).json({ message: true });
-  } else {
-    return res.status(200).json({ message: false });
-  }
-};
-
-export { createOrgHandler, getAllOrgs, getYourOrg, isOrg };
+export { createOrgHandler, getAllOrgs, getYourOrg };
