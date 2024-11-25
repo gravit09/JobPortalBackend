@@ -85,6 +85,7 @@ const getAllJobHandler = async (req, res) => {
   }
 };
 
+//get all the jobs listed by an specific org
 const getOrgJobListings = async (req, res) => {
   const userId = req.userId;
   const { organization } = await User.findById({ _id: userId });
@@ -108,4 +109,15 @@ const getOrgJobListings = async (req, res) => {
   }
 };
 
-export { listJobHandler, getAllJobHandler, getOrgJobListings };
+const deleteAnJob = async (req, res) => {
+  const jobId = req.body;
+  try {
+    const response = await Job.deleteOne({ _id: jobId });
+    if (response)
+      return res.status(200).json({ message: "job listing deleted" });
+  } catch (err) {
+    console.log("something went wrong while deleting job", err);
+  }
+};
+
+export { listJobHandler, getAllJobHandler, getOrgJobListings, deleteAnJob };
