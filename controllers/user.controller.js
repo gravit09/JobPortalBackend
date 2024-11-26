@@ -118,7 +118,7 @@ const applyJob = async (req, res) => {
 
 //to get applied job
 const getAppliedJobs = async (req, res) => {
-  const { userId } = req.userId;
+  const userId = req.userId;
   try {
     const applications = await JobApplication.find({ userId }).populate(
       "jobId"
