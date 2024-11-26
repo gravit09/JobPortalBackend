@@ -93,7 +93,8 @@ const isAllowed = async (req, res) => {
 
 //to apply a job
 const applyJob = async (req, res) => {
-  const { userId, jobId } = req.body;
+  const { jobId } = req.body;
+  const userId = req.userId;
 
   try {
     const existingApplication = await JobApplication.findOne({ userId, jobId });
@@ -111,12 +112,13 @@ const applyJob = async (req, res) => {
     res
       .status(500)
       .json({ message: "An error occurred while applying", error });
+    console.log(error);
   }
 };
 
 //to get applied job
 const getAppliedJobs = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.userId;
   try {
     const applications = await JobApplication.find({ userId }).populate(
       "jobId"
