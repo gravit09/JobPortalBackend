@@ -1,5 +1,6 @@
 import zod from "zod";
 import { User } from "../models/user.models.js";
+import { JobApplication } from "../models/JobApplication.model.js";
 
 //User Input Validation
 const userSchema = zod.object({
@@ -90,4 +91,51 @@ const isAllowed = async (req, res) => {
   });
 };
 
-export { userRegisterHandler, loginUserHandler, isAllowed };
+//to apply a job
+const applyJob = async (req, res) => {
+  const { userId, jobId } = req.body;
+
+  try {
+    const existingApplication = await JobApplication.findOne({ userId, jobId });
+    if (existingApplication) {
+      return res
+        .status(400)
+        .json({ message: "You have already applied for this job" });
+    }
+
+    const application = new JobApplication({ userId, jobId });
+    await application.save();
+
+    res.status(201).json({ message: "Job applied successfully", application });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred while applying", error });
+  }
+};
+
+//to get applied job
+const getAppliedJobs = async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const applications = await JobApplication.find({ userId }).populate(
+      "jobId"
+    );
+    res
+      .status(200)
+      .json({ message: "Applications fetched successfully", applications });
+  } catch (error) {
+    res.status(500).json({
+      message: "An error occurred while fetching applications",
+      error,
+    });
+  }
+};
+
+export {
+  userRegisterHandler,
+  loginUserHandler,
+  isAllowed,
+  applyJob,
+  getAppliedJobs,
+};
