@@ -8,12 +8,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
-.env
+# Environment variablesss
 
 # Build directories
 dist/
 build/
+
 
 # Optional directories
 coverage/
